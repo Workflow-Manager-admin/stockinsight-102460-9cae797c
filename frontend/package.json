@@ -1,0 +1,17 @@
+{
+  "name": "stockinsight-frontend",
+  "version": "1.0.0",
+  "description": "StockInsight React Frontend",
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "axios": "^1.6.8",
+    "plotly.js": "^2.30.0",
+    "react-plotly.js": "^2.6.0"
+  },
+  "scripts": {
+    "start": "react-scripts start --host 0.0.0.0 --port 3000",
+    "build": "react-scripts build"
+  }
+}
