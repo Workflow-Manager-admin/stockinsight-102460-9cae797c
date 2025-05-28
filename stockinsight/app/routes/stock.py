@@ -125,12 +125,18 @@ class RecentlySearched(MethodView):
         try:
             conn = get_db_conn()
             cur = conn.cursor()
-            cur.execute("""
+            cur.execute(
+                """
                 SELECT ticker, name, last_searched FROM searched_stocks
                 ORDER BY last_searched DESC LIMIT 10;
-            """)
+                """
+            )
             results = [
-                {"ticker": row[0], "name": row[1], "last_searched": row[2].strftime("%Y-%m-%d %H:%M")}
+                {
+                    "ticker": row[0],
+                    "name": row[1],
+                    "last_searched": row[2].strftime("%Y-%m-%d %H:%M"),
+                }
                 for row in cur.fetchall()
             ]
             cur.close()
@@ -138,3 +144,4 @@ class RecentlySearched(MethodView):
             return {"recent": results}
         except Exception:
             return {"recent": []}
+
