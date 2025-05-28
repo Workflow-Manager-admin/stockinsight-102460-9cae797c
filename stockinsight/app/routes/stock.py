@@ -31,7 +31,10 @@ def get_db_conn():
 
 
 def upsert_stock_query(ticker, company_name):
-    """Store searched ticker in database with timestamp. Add if new; update timestamp if seen before."""
+    """
+    Store searched ticker in database with timestamp.
+    Add if new; update timestamp if seen before.
+    """
     try:
         conn = get_db_conn()
         cur = conn.cursor()
