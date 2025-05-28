@@ -18,7 +18,11 @@ DB_PORT = int(os.environ.get("POSTGRES_PORT", 5432))
 def get_db_conn():
     """Return new connection for PostgreSQL db."""
     return psycopg2.connect(
-        dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST, port=DB_PORT
+        dbname=DB_NAME,
+        user=DB_USER,
+        password=DB_PASS,
+        host=DB_HOST,
+        port=DB_PORT,
     )
 
 
