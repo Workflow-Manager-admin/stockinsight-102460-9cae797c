@@ -79,6 +79,7 @@ class StockInfo(MethodView):
             upsert_stock_query(ticker, company_info["name"])
         return company_info
 
+
 # PUBLIC_INTERFACE
 @blp.route("/history/<string:ticker>")
 class StockHistory(MethodView):
