@@ -6,7 +6,10 @@ from flask import request
 import yfinance as yf
 import psycopg2
 import os
-blp = Blueprint("Stock", "stock", url_prefix="/api/stock", description="Stock data endpoints")
+
+blp = Blueprint(
+    "Stock", "stock", url_prefix="/api/stock", description="Stock data endpoints"
+)
 
 # Use environment vars for DB connection (fallback to defaults for dev/demo)
 DB_NAME = os.environ.get("POSTGRES_DB", "stocks")
@@ -14,6 +17,7 @@ DB_USER = os.environ.get("POSTGRES_USER", "postgres")
 DB_PASS = os.environ.get("POSTGRES_PASSWORD", "postgres")
 DB_HOST = os.environ.get("POSTGRES_HOST", "localhost")
 DB_PORT = int(os.environ.get("POSTGRES_PORT", 5432))
+
 
 def get_db_conn():
     """Return new connection for PostgreSQL db."""
@@ -125,6 +129,7 @@ class StockHistory(MethodView):
 @blp.route("/recent")
 class RecentlySearched(MethodView):
     """List recently searched tickers."""
+
     def get(self):
         try:
             conn = get_db_conn()
@@ -148,4 +153,3 @@ class RecentlySearched(MethodView):
             return {"recent": results}
         except Exception:
             return {"recent": []}
-
