@@ -101,7 +101,11 @@ class StockHistory(MethodView):
             return {"prices": [], "timeframe": timeframe}
         ohlc = [
             {
-                "datetime": d.strftime("%Y-%m-%d %H:%M") if not isinstance(d, str) else d,
+                "datetime": (
+                    d.strftime("%Y-%m-%d %H:%M")
+                    if not isinstance(d, str)
+                    else d
+                ),
                 "open": float(row["Open"]),
                 "high": float(row["High"]),
                 "low": float(row["Low"]),
@@ -111,6 +115,7 @@ class StockHistory(MethodView):
             for d, row in hist.iterrows()
         ]
         return {"prices": ohlc, "timeframe": timeframe}
+
 
 # PUBLIC_INTERFACE
 @blp.route("/recent")
