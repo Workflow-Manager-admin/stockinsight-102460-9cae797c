@@ -6,8 +6,6 @@ from flask import request
 import yfinance as yf
 import psycopg2
 import os
-from datetime import datetime, timedelta
-
 blp = Blueprint("Stock", "stock", url_prefix="/api/stock", description="Stock data endpoints")
 
 # Use environment vars for DB connection (fallback to defaults for dev/demo)
@@ -23,30 +21,37 @@ def get_db_conn():
         dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST, port=DB_PORT
     )
 
+
 def upsert_stock_query(ticker, company_name):
     """Store searched ticker in database with timestamp. Add if new; update timestamp if seen before."""
     try:
         conn = get_db_conn()
         cur = conn.cursor()
-        cur.execute("""
+        cur.execute(
+            """
             CREATE TABLE IF NOT EXISTS searched_stocks (
                 id SERIAL PRIMARY KEY,
                 ticker VARCHAR(12) NOT NULL,
                 name TEXT,
                 last_searched TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
-        """)
-        cur.execute("""
+            """
+        )
+        cur.execute(
+            """
             INSERT INTO searched_stocks (ticker, name, last_searched)
             VALUES (%s, %s, CURRENT_TIMESTAMP)
             ON CONFLICT (ticker)
             DO UPDATE SET last_searched = CURRENT_TIMESTAMP, name = EXCLUDED.name;
-        """, (ticker.upper(), company_name))
+            """,
+            (ticker.upper(), company_name),
+        )
         conn.commit()
         cur.close()
         conn.close()
-    except Exception as e:
+    except Exception:
         pass  # Don't block API if DB fails
+
 
 # PUBLIC_INTERFACE
 @blp.route("/info/<string:ticker>")
